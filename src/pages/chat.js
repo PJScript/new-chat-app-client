@@ -39,6 +39,8 @@ const Chat = () => {
   const [view, setView] = useState(false)
   const [img_url, setImg_url] = useState('')
 
+  const [isRender, setIsRender] = useState(false);
+
 
 
   const socketListener = (scrollBottom)=>{
@@ -53,8 +55,8 @@ const Chat = () => {
         
 
       console.log(data)
-      // setList((list) => [...list.slice(1,list.length), data])
-      setList((list) => [...list, data]);
+      console.log(list,"리스트")
+      setList((list) => list.length >= 50 ? [...list.slice(1,list.length), data] : [...list, data] )
     })
     socket.on("broadcast-image", (data) => {
       setList((list) => [...list, data]);
@@ -73,6 +75,10 @@ const Chat = () => {
 
   const MoreMessage = () => {
     setMoreMessageLoading(true)
+    if(!isLoading){
+      alert('메시지가 더 이상 없습니다.')
+      return;
+    }
 
     const url = `http://localhost:8080/api/chat/morechat?page=${Number(sessionStorage.getItem('p'))}`
     fetch(url, {
@@ -85,6 +91,7 @@ const Chat = () => {
           alert('더 이상 채팅이 없어요!')
           setMoreMessageLoading(false)
           setScrollTop(false)
+
         } else {
           const nextPage = sessionStorage.setItem('p', Number(sessionStorage.getItem('p')) + 1)
           setPage(nextPage)
@@ -105,8 +112,9 @@ const Chat = () => {
  
 
   // scrollBottom 
-  useEffect(() => {
+  useEffect( () => {
     let who
+  
     if(list.length > 0 && !scrollTop){
       who = list[list.length-1].email
       console.log(email)
@@ -119,10 +127,19 @@ const Chat = () => {
       listBottomRef.current?.scrollIntoView({hehavior:'smooth'});
       setNewMessageAlert(0);
 
-    }else{
+    } else{
       // listBottomRef.current.scrollTo(0, listBottomRef.current.scrollHeight);
       setNewMessageAlert(1)
     }
+
+    if(list.length > 0){
+      setTimeout(()=>{
+        setIsLoading(() => true)
+      },1500)
+    }
+    
+
+
   }, [list])
 
 
@@ -154,6 +171,8 @@ const Chat = () => {
       console.log('언마운트')
     }
   }, [])
+
+ 
 
 
   //scroll bottom intersection observe
@@ -197,9 +216,7 @@ const Chat = () => {
     setImg_url(list[id].img_url)
     setView(!view)
   }
-  useEffect(()=>{
-    console.log(img_url,"이미지 유알엘")
-  }, [img_url])
+  
 
    useEffect(() => {
     if(isLoading){
@@ -235,11 +252,21 @@ const Chat = () => {
           return res.json();
         }
       }).then(async (data) => {
-        console.log(data.data)
-        await setList(data.data)
-        listBottomRef.current?.scrollIntoView();
-        setIsLoading(true);
-        setEmail(data.email)
+        if(data.data.length === 0){
+          alert('데이터가 더 이상 없습니다!')
+
+        sessionStorage.setItem('p', Number(1))
+
+          // setIsLoading(true);
+        }else{
+          await setList(data.data)
+          await listBottomRef.current?.scrollIntoView();
+          setEmail(data.email)
+          console.log(data.data)
+        }
+
+        
+       
       })
 
   }, [])
@@ -275,11 +302,11 @@ const Chat = () => {
         <ChatListWrapper>
           <ChatBoxChatList ref={listRef} >
             {moreMessageLoading === true ?
-              <TopLoadingBox>로딩중..</TopLoadingBox>
+              <TopLoadingBox>메시지를 기다리는 중..</TopLoadingBox>
               :
               <div style={{ height: '20px' }}></div>
             }
-            <ScrollTopTargetBox ref={listTopRef}></ScrollTopTargetBox>
+            <ScrollTopTargetBox isLoading={isLoading} ref={listTopRef}></ScrollTopTargetBox>
 
             {list.map((item, idx) => {
               if(item.email === "system date"){
@@ -565,8 +592,10 @@ const ScrollBottomTargetBox = styled.div`
   /* margin-top:-100px; */
 `
 
-const ScrollTopTargetBox = styled.div`
+const ScrollTopTargetBox = styled.div.attrs(()=>{
 
+})`
+  display:${(props) => props.isLoading ? "block":"none"};
   width:100%;
   /* margin-top:-100px; */
 `
@@ -592,6 +621,7 @@ const TopLoadingBox = styled.div`
   font-size:18px;
   text-align:center;
   font-weight:bold;
+  color:gray;
 `
 
 

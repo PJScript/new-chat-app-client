@@ -6,7 +6,7 @@ import useStore from "../store/store";
 
 function App() {
   // console.log = function no_console() {};
-  //   console.warn = function no_console() {};
+    // console.warn = function no_console() {};
   const email = useStore((state) => state.email)
   const setEmail = useStore((state) => state.setEmail)
   const password = useStore((state)=>state.password)

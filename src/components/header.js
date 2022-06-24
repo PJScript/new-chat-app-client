@@ -27,7 +27,11 @@ if(email.length > 0){
     })
     .then(()=>{
  setLogin(false)
-alert('로그아웃')
+ navigate('/')
+ setTimeout(()=>{
+    alert('로그아웃')
+
+ },1000);
     })
 }else{
     navigate('/')

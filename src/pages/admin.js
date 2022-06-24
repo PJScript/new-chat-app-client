@@ -153,10 +153,42 @@ const Admin = () => {
 
 
     const onClickAllChatClear = () =>{
+        const allClearUrl = `http://localhost:8080/api/admin/clearchat`
 
+
+        if (!window.confirm(`정말 모든 유저의 채팅을 지우시겠습니까?`)) {
+            return;
+        }
+
+        fetch(allClearUrl, {
+            method: 'get',
+            credentials: 'include',
+            headers: { 'Content-Type': 'application/json' },
+        })
+            .then((res) => res.json())
+            .then((data) => {
+                window.location.reload();
+                console.log(data)
+            })
     }
+    
     const onClickAllChatClearUndo = () => {
+        const allClearUrl = `http://localhost:8080/api/admin/undochat`
 
+
+        if (!window.confirm(`정말 되돌리시겠습니까?`)) {
+            return;
+        }
+        fetch(allClearUrl, {
+            method: 'get',
+            credentials: 'include',
+            headers: { 'Content-Type': 'application/json' },
+        })
+            .then((res) => res.json())
+            .then((data) => {
+                window.location.reload();
+                console.log(data)
+            })
     }
 
 
