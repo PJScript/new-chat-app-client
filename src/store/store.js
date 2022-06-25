@@ -24,7 +24,10 @@ const useStore = create(set => ({
   setSec:() => set({ sec:10 }),
 
   view:10,
-  setView:() => set({ view:false })
+  setView:(input) => set({ view:input }),
+
+  img:"",
+  setImg:(input) => set({ img:input })
 }));
 
 

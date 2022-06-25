@@ -9,6 +9,7 @@ const AdminBlock = () => {
   const setEmail = useStore((state) => state.setEmail)
   const password = useStore((state)=>state.password)
   const setPassword = useStore((state)=>state.setPassword)
+  const setLogin = useStore((state)=>state.setLogin)
 
 
 
@@ -23,7 +24,7 @@ const AdminBlock = () => {
   }
 
   const clickLogin = () => {
-    const url = `http://localhost:8080/api/user/login`
+    const url = `http://api.rudydy.xyz:8080/api/user/login`
     const body = {
       email:email,
       password:password
@@ -36,13 +37,14 @@ const AdminBlock = () => {
     })
     .then((res)=> {
       if(res.status === 200){
+        setLogin(true);
         navigate('/admin')
       }else if( res.status === 401){
         navigate('/block')
 
         alert('허가 받지 않은 사용자 이거나 삭제된 사용자 입니다')
       }else{
-        navigate('/')
+        navigate('/login')
 alert('알 수 없는 에러')
       }
     })}

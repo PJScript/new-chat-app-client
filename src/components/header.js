@@ -13,11 +13,11 @@ const Header = () => {
 
     const onClickLogout = () => {
         if(!login){
-            navigate('/')
+            navigate('/login')
             return;
         }
 
-const url = `http://localhost:8080/api/user/logout`
+const url = `http://api.rudydy.xyz:8080/api/user/logout`
 
 if(email.length > 0){
     fetch(url,{
@@ -27,16 +27,20 @@ if(email.length > 0){
     })
     .then(()=>{
  setLogin(false)
- navigate('/')
+ navigate('/login')
  setTimeout(()=>{
     alert('로그아웃')
 
  },1000);
     })
 }else{
-    navigate('/')
+    navigate('/login')
 }
 }
+
+// useEffect(()=>{
+//     console.log(email)
+//     },[email])
 
 useEffect(()=>{
   console.log(login,"로그인")
@@ -45,7 +49,7 @@ useEffect(()=>{
         <HeaderLayout>
             <HeaderList>
                 <HeaderItem onClick={() =>navigate('/chat')}>채팅</HeaderItem>
-                <HeaderItem onClick={() =>navigate('/')}>홈</HeaderItem>
+                <HeaderItem onClick={() =>navigate('/login')}>홈</HeaderItem>
                 <HeaderItem onClick={onClickLogout}>
                     {login ? "로그아웃":
                     "로그인"
@@ -60,7 +64,7 @@ useEffect(()=>{
 export default Header
 
 const HeaderLayout = styled.div`
-  position:absolute;
+  position:fixed;
   top:0;
   z-index: 999;
   width:100%;

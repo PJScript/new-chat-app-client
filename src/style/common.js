@@ -49,6 +49,129 @@ export const DefaultButton = styled.div`
 
 
 
+export const ChatBoxSystemDateItem = styled.div`
+display:flex;
+justify-content:center;
+align-items:center;
+  width:100%;
+  height:50px;
+  background:white;
+  padding:10px;
+  font-size:14px;
+  font-weight:bold;
+  color:gray;
+`
+
+
+export const ChatBoxChatItem = styled.li`
+  display:flex;
+  width:100%;
+  height:auto;
+  margin-bottom:10px;
+  list-style:none;
+`
+
+export const ChatProfile = styled.img`
+
+`
+
+export const ChatDataBox = styled.div`
+  width:100%;
+  height:auto;
+  display:flex;
+  flex-direction:column;
+  margin-left:10px;
+  margin-bottom:10px;
+`
+
+export const ChatDataBoxUserInfo = styled.div`
+  display:flex;
+`
+export const ChatDataBoxUserName = styled.div`
+ font-weight:bold;
+`
+
+export const ChatDataBoxDate = styled.div`
+margin-left:6px;
+  color:gray;
+  font-size:15px;
+
+`
+
+export const ChatDataBoxMsg = styled.div`
+  background:whitesmoke;
+  padding:10px;
+  width:fit-content;
+  border-radius: 4px;
+  word-break: break-all;
+
+
+`
+
+export const ChatDataBoxImg = styled.img`
+  width:36%;
+  height:auto;
+  border:1px solid gray;
+  @media screen and (max-width:768px){
+    width:55%;
+    height:auto;
+  }
+`
+
+
+export const MyChatDataBox = styled.div`
+  display:flex;
+  flex-direction:column;
+  align-items: flex-end;
+  width:100%;
+  height:auto;
+  margin-right:30px;
+  margin-top:20px;
+
+`
+
+export const MyChatDataBoxMsg = styled.div`
+  width:fit-content;
+  max-width:50%;
+  height:auto;
+  padding:10px;
+  word-break: break-all;
+
+  background:rgb(254, 240, 27);
+  /* padding-left:50%; */
+  text-align:left;
+  border:1px solid rgb(128,128,128,0.2);
+  border-radius:20px;
+`
+
+export const MyChatDataBoxImg = styled.img`
+    width:35%;
+  height:auto;
+  border:1px solid gray;
+  @media screen and (max-width:768px){
+    width:55%;
+    height:auto;
+  }
+  border:1px solid gray;
+`
+
+export const MyChatDataBoxUserInfo = styled.div`
+ width:fit-content;
+ display:flex;
+`
+
+export const MyChatDataBoxUserName = styled.div`
+  font-weight: bold;
+  margin-left:20px;
+`
+export const MyChatDataBoxDate = styled.div`
+  font-size:15px;
+  color:gray;
+`
+
+
+
+
 
 
 

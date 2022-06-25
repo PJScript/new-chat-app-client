@@ -45,7 +45,7 @@ const Signup = () => {
             return;
         }
 
-        const url = `http://localhost:8080/api/user/signup`
+        const url = `http://api.rudydy.xyz:8080/api/user/signup`
         const body = {
             email: email,
             nickname: nickname,
@@ -58,7 +58,7 @@ const Signup = () => {
             body:JSON.stringify(body)
         }).then(() => {
 
-            navigate('/')
+            navigate('/login')
             alert('회원 가입 완료')
             console.log('완료')
         })

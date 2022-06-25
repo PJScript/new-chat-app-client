@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import useStore from "../store/store";
 import styled from "styled-components"
@@ -17,14 +17,26 @@ export const MessageInputComponent = ({socket,setList}) => {
   const navigate = useNavigate()
 
   const [message, setMessage] = useState("")
+    
+   
+  
+    const keyDownSubmit = useCallback((e)=>{
+        console.log(e.code,"zhem")
+        console.log(message)
+        if(e.code !== 'Enter'){
+            return;
+        }else{
+            onClickSubmit()
+        }
 
-
+    }, [message,file])
+    
     const onClickSubmit = async (e) => {
-        if(message.length <= 0 && !file){
+        console.log(message,"메세지")
+        if(message.length <=1 && !file){
           alert('메시지를 입력하거나 파일을 업로드 해주세요')
           return;
         }
-        
         if(file){
           const formData = new FormData();
           formData.append('image', file);
@@ -34,7 +46,7 @@ export const MessageInputComponent = ({socket,setList}) => {
           }
           // e.preventDefault()
       
-          fetch('http://localhost:8080/api/chat/image', { // Your POST endpoint
+          fetch('http://api.rudydy.xyz:8080/api/chat/image', { // Your POST endpoint
             method: 'POST',
             credentials: "include",
             body: formData
@@ -49,11 +61,12 @@ export const MessageInputComponent = ({socket,setList}) => {
           inputRef.current.value = ""
           imgInputRef.current.value = ""
           setFile()
+          setMessage("")
         //   setScrollBottom(1)
     
         }else if(!file && message.length >= 0){
     
-          const url = `http://localhost:8080/api/chat`
+          const url = `http://api.rudydy.xyz:8080/api/chat`
     
           const body = {
             message: message,
@@ -68,18 +81,21 @@ export const MessageInputComponent = ({socket,setList}) => {
             body: JSON.stringify(body)
           }).then((res) => {
             if (res.status !== 200) {
-              navigate('/')
+              navigate('/login')
               setTimeout(() => {
                 alert('세션이 만료 되었습니다')
       
               }, 1000)
             }
           }).catch((err) => {
-            navigate('/')
+            navigate('/login')
             alert('세션이 만료 되었습니다')
           })
-          inputRef.current.value = ""
         //   setScrollBottom(1)
+        inputRef.current.value = ""
+          imgInputRef.current.value = ""
+          setFile()
+          setMessage("")
         }
         
         else{
@@ -92,10 +108,9 @@ export const MessageInputComponent = ({socket,setList}) => {
     setFile(e.target.files[0])    
   }
   const onChangeMessage = (e) => {
-    setMessage(e.target.value)
   }
     const onClickRmChat = () => {
-    const url = `http://localhost:8080/api/chat/removechat`
+    const url = `http://api.rudydy.xyz:8080/api/chat/removechat`
     if (window.confirm('정말 채팅을 지우시겠습니까?')) {
       fetch(url, {
         method: 'GET',
@@ -110,23 +125,32 @@ export const MessageInputComponent = ({socket,setList}) => {
     }
     }
 
+    useEffect(()=>{
+    if(file){
+        inputRef.current.focus()
+    }
+      window.addEventListener('keyup',keyDownSubmit)
+
+      return () => window.removeEventListener('keyup',keyDownSubmit)
+
+    }, [message,file])
     return (
         <>
          <MessageInputBox>
-            <MessageInput ref={inputRef} placeholder="메시지를 입력 해주세요" onChange={onChangeMessage} />
-            <SubmitBtn onClick={onClickSubmit}>전송</SubmitBtn>
+            <MessageInput onKeyDown={(e) => e.key === 'Enter' ? e.preventDefault():""} ref={inputRef} placeholder="메시지를 입력 해주세요" onChange={  (e) =>  setMessage(e.target.value)} />
+            <SubmitBtn onClick={onClickSubmit} onKeyDown={onClickSubmit}>전송</SubmitBtn>
           </MessageInputBox>
           <FooterToolBox>
             <RemoveChatBtn onClick={onClickRmChat}>채팅 지우기</RemoveChatBtn>
 
             <ImageInputBox>
-              <ClearFileBtn>파일 초기화</ClearFileBtn>
+              {/* <ClearFileBtn>파일 초기화</ClearFileBtn> */}
               <div class="button">
                 {/* <label for="chooseFile">
             👉 이미지 업로드 👈
         </label> */}
               </div>
-              <input ref={imgInputRef} type="file" id="chooseFile" name="chooseFile" accept="image/*" onChange={onChangeImg} />
+              <input ref={imgInputRef} onKeyDown={(e) => e.key === 'Enter' ? e.preventDefault():""} type="file" id="chooseFile" name="chooseFile" accept="image/*" onChange={onChangeImg} />
             </ImageInputBox>
           </FooterToolBox>
         </>
@@ -135,13 +159,13 @@ export const MessageInputComponent = ({socket,setList}) => {
 }
 
 
-// export const MemoizedMessageInput = React.memo(MessageInputComponent)
+export const MemoizedMessageInput = React.memo(MessageInputComponent)
 
 
 const MessageInputBox = styled.div`
   display:flex;
   width:100%;
-  height:auto;
+  height:50px;
   padding-bottom:10px;
   border-top:1px solid rgb(128,128,128,0.4);
   /* background:blue; */
@@ -152,7 +176,7 @@ const MessageInput = styled.textarea`
   border-radius:4px;
   padding:10px;
   border:1px solid gray;
-  min-height:70px;
+  min-height:40px;
   height:auto;
   margin-top:10px;
 `
@@ -162,10 +186,10 @@ const SubmitBtn = styled.div`
   justify-content: center;
   align-items:center;
   font-weight:bold;
-  width:80px;
-  min-width: 80px;
+  width:60px;
+  min-width: 40px;
   padding:10px;
-  height:70px;
+  height:40px;
   margin-top:10px;
   margin-left:10px;
   border-radius:4px;
@@ -176,6 +200,9 @@ const SubmitBtn = styled.div`
 const FooterToolBox = styled.div`
   display:flex;
   margin-bottom:6px;
+  font-size:14px;
+  margin-top:2px;
+  overflow:hidden;
 `
 
 

@@ -5,8 +5,8 @@ import * as S from "../style/common"
 import useStore from "../store/store";
 
 function App() {
-  // console.log = function no_console() {};
-    // console.warn = function no_console() {};
+  console.log = function no_console() {};
+    console.warn = function no_console() {};
   const email = useStore((state) => state.email)
   const setEmail = useStore((state) => state.setEmail)
   const password = useStore((state)=>state.password)
@@ -28,7 +28,7 @@ function App() {
   }
 
   const clickLogin = () => {
-    const url = `http://localhost:8080/api/user/login`
+    const url = `http://api.rudydy.xyz:8080/api/user/login`
     const body = {
       email:email,
       password:password
@@ -44,11 +44,11 @@ function App() {
         setLogin(true)
         navigate('/chat')
       }else if( res.status=== 401){
-        navigate('/')
+        navigate('/login')
 
         alert('허가 받지 않은 사용자 이거나 삭제된 사용자 입니다')
       }else{
-        navigate('/')
+        navigate('/login')
 alert('알 수 없는 에러')
       }
     })}
@@ -60,6 +60,10 @@ navigate('/block')
   useEffect(()=>{
     console.log(email)
   }, [email])
+
+  useEffect(()=>{
+    sessionStorage.setItem('p', Number(1))
+  }, [])
 
 
   

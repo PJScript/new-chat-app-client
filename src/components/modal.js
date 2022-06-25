@@ -5,7 +5,12 @@ import useStore from "../store/store";
 // import img02 from "../assets/woman.jpg"
 
 
-const Modal = ({view,setView,img}) => {
+const Modal = () => {
+
+    const view = useStore( ( state ) => state.view)
+    const setView = useStore( ( state ) => state.setView)
+    const img = useStore( ( state ) => state.img)
+
     const onClickImg = (e) => {
         e.stopPropagation();
     }
@@ -25,7 +30,7 @@ const Modal = ({view,setView,img}) => {
     // }, [view])
     return (
         
-      <ModalWrapper  view={view} onClick={()=>setView(!view)}>
+      <ModalWrapper  view={view} onClick={()=>setView(false)}>
         <ModalInner img={img} onClick={onClickImg}>
             <ModalCloseBtn onClick={() => setView(false)}>X</ModalCloseBtn>
 
@@ -37,7 +42,7 @@ const Modal = ({view,setView,img}) => {
     )
 }
 
-export default Modal
+export default React.memo(Modal);
 
 
 const ModalWrapper = styled.div.attrs(()=>{})`

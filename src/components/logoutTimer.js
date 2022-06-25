@@ -13,7 +13,7 @@ const LogoutTimer = () => {
 
     const timeId = useRef(null)
     const SessionTimerReset = () => {
-        const url = `http://localhost:8080/api/user/session`
+        const url = `http://api.rudydy.xyz:8080/api/user/session`
         fetch(url,{
             method: 'GET',
             credentials: "include", // to send HTTP only cookies
@@ -41,7 +41,7 @@ const LogoutTimer = () => {
 
         if (sec <= 0) {
             clearInterval(timeId.current)
-            navigate('/')
+            navigate('/login')
             let timer = setTimeout(() => {
                 alert('세션 만료')
                 return clearTimeout(timer)

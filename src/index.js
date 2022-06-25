@@ -10,7 +10,7 @@ import reportWebVitals from './reportWebVitals';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import GlobalStyle from './style/GlobalStyle';
 import Signup from './pages/signup';
-
+import Home from './pages/home'
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <BrowserRouter>
@@ -18,12 +18,12 @@ root.render(
   <Header />
 
     <Routes>
-      <Route path="/" element={<App />}></Route>
+      <Route path="/" element={<Home />}></Route>
+      <Route path="/login" element={<App />}></Route>
       <Route path="/signup" element={<Signup />}></Route>
       <Route path="/chat" element={<Chat />}></Route>
       <Route path="/admin" element={<Admin />}></Route>
       <Route path="/block" element={<Block />}></Route>
-
     </Routes>
   </BrowserRouter>
 );
