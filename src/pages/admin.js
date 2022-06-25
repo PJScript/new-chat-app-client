@@ -13,7 +13,7 @@ const Admin = () => {
     const [pw, setPw] = useState();
 
     const onClickPermit = (e) => {
-        const permitUrl = `http://api.rudydy.xyz:8080/api/admin/permit`
+        const permitUrl = `http://localhost:8080/api/admin/permit`
 
         const id = Number(e.target.getAttribute('id'))
 
@@ -42,7 +42,7 @@ const Admin = () => {
     }
 
     const onClickDenied = (e) => {
-        const deniedUrl = `http://api.rudydy.xyz:8080/api/admin/denied`
+        const deniedUrl = `http://localhost:8080/api/admin/denied`
         const id = Number(e.target.getAttribute('id'))
 
 
@@ -74,7 +74,7 @@ const Admin = () => {
 
     const onClickPermitUserDelete = (e) => {
 
-        const deleteUrl = `http://api.rudydy.xyz:8080/api/admin/rm`
+        const deleteUrl = `http://localhost:8080/api/admin/rm`
         const id = Number(e.target.getAttribute('id'))
         console.log(id, "아이디")
 
@@ -106,7 +106,7 @@ const Admin = () => {
     }
 
     const onClickDeniedUserDelete = (e) => {
-        const deleteUrl = `http://api.rudydy.xyz:8080/api/admin/rm`
+        const deleteUrl = `http://localhost:8080/api/admin/rm`
         const id = Number(e.target.getAttribute('id'))
 
         if (!window.confirm(`${deniedUsers[id].email} 유저를 정말 삭제 하시겠습니까? 삭제시 되돌릴 수 없습니다`)) {
@@ -131,7 +131,7 @@ const Admin = () => {
     }
 
     const submitPwChange = () => {
-        const url = `http://api.rudydy.xyz:8080/api/admin/password`
+        const url = `http://localhost:8080/api/admin/password`
         const body = {
             password: pw
         }
@@ -154,7 +154,7 @@ const Admin = () => {
 
 
     const onClickAllChatClear = () =>{
-        const allClearUrl = `http://api.rudydy.xyz:8080/api/admin/clearchat`
+        const allClearUrl = `http://localhost:8080/api/admin/clearchat`
 
 
         if (!window.confirm(`정말 모든 유저의 채팅을 지우시겠습니까?`)) {
@@ -177,7 +177,7 @@ alert('사이트 관리자에게 문의 하세요')
     }
     
     const onClickAllChatClearUndo = () => {
-        const allClearUrl = `http://api.rudydy.xyz:8080/api/admin/undochat`
+        const allClearUrl = `http://localhost:8080/api/admin/undochat`
 
 
         if (!window.confirm(`정말 되돌리시겠습니까?`)) {
@@ -200,7 +200,7 @@ alert('사이트 관리자에게 문의 하세요')
 
 
     useEffect(() => {
-        const url = `http://api.rudydy.xyz:8080/api/admin/check`
+        const url = `http://localhost:8080/api/admin/check`
         fetch(url, {
             method: 'GET',
             credentials: 'include',
@@ -222,8 +222,8 @@ alert('사이트 관리자에게 문의 하세요')
     }, [])
 
     useEffect(() => {
-        const permitUrl = `http://api.rudydy.xyz:8080/api/admin/permituser`
-        const deniedUrl = `http://api.rudydy.xyz:8080/api/admin/denieduser`
+        const permitUrl = `http://localhost:8080/api/admin/permituser`
+        const deniedUrl = `http://localhost:8080/api/admin/denieduser`
         fetch(permitUrl)
             .then((res) => res.json())
             .then((data) => {

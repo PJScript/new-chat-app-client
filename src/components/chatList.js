@@ -81,7 +81,7 @@ const ChatList = () => {
     //   return;
     // }
 
-    const url = `http://api.rudydy.xyz:8080/api/chat/morechat?page=${Number(sessionStorage.getItem('p'))}`
+    const url = `http://localhost:8080/api/chat/morechat?page=${Number(sessionStorage.getItem('p'))}`
     fetch(url, {
       method: 'GET',
       credentials : "include", // to send HTTP only cookies
@@ -89,10 +89,10 @@ const ChatList = () => {
     }).then((res) => {
 
       if (res.status !== 200) {
-                // navigate('/login')
-                // setTimeout(() => {
-                //   alert('로그인 후 이용 할 수 있습니다')
-                // }, 1000)
+                navigate('/login')
+                setTimeout(() => {
+                  alert('로그인 후 이용 할 수 있습니다')
+                }, 1000)
     }else{
     return res.json()
     }
@@ -177,7 +177,7 @@ const ChatList = () => {
 
   // socket connect
   useEffect(() => {
-    socket = io.connect('http://api.rudydy.xyz:8080')
+    socket = io.connect('http://localhost:8080')
     sessionStorage.setItem('p', 1)
     socketListener()
 
@@ -217,18 +217,10 @@ const ChatList = () => {
       observer.unobserve(entry.target);
       observer.observe(entry.target);
     } else {
+      setMoreMessageLoading(true)
       MoreMessage();
     }
   }
-
-
-  const onClickImage = (e) => {
-    const id = e.target.getAttribute('id')
-    console.log(list[id])
-    setImg(list[id].img_url)
-    setView(true)
-  }
-
 
   useEffect(() => {
     if (isLoading) {
@@ -239,6 +231,14 @@ const ChatList = () => {
     }
 
   }, [isLoading]);
+
+
+  const onClickImage = (e) => {
+    const id = e.target.getAttribute('id')
+    console.log(list[id])
+    setImg(list[id].img_url)
+    setView(true)
+  }
 
   const detectMobileKeyboard = (e) => {
 console.log(document.activeElement)
@@ -262,12 +262,13 @@ listBottomRef.current?.scrollIntoView();
     <ChatListWrapper>
       <ChatBoxChatList ref={listRef} >
         {/* <Modal /> */}
+        <ScrollTopTargetBox ref={listTopRef}></ScrollTopTargetBox>
+
         {moreMessageLoading === true ?
           <TopLoadingBox>메시지를 기다리는 중..</TopLoadingBox>
           :
-          <div style={{ height: '20px' }}></div>
+          <TopLoadingBox>더이상 메시지가 없어요..!</TopLoadingBox>
         }
-        <ScrollTopTargetBox ref={listTopRef}></ScrollTopTargetBox>
 
         {list.map((item, idx) => {
           if (item.email !== email) {
@@ -296,7 +297,7 @@ const ChatListWrapper = styled.div`
   display:flex;
   flex-direction:column;
   position:fixed;
-  /* padding-top:60px; */
+  padding-top:50px;
   /* padding-left:220px; */
   padding-right:20px;
   /* background:blue; */

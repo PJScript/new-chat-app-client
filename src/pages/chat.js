@@ -13,7 +13,7 @@ const Chat = () => {
   const login = useStore((state) => state.login)
   //prev chat request
   // useEffect(() => {
-  //   const url = `http://api.rudydy.xyz:8080/api/chat/morechat?page=1`
+  //   const url = `http://localhost:8080/api/chat/morechat?page=1`
   //   // const body = {
   //   //   email:email,
   //   //   password:password
@@ -65,9 +65,9 @@ const Chat = () => {
     <S.Layout>
       <ChatInner>
       <Modal />
-        {/* <ChatSideBar>
+        <ChatSideBar>
           <ChatSideBarItem>Secret Chat App</ChatSideBarItem>
-        </ChatSideBar> */}
+        </ChatSideBar>
 
        
 

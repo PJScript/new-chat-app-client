@@ -45,7 +45,7 @@ const Signup = () => {
             return;
         }
 
-        const url = `http://api.rudydy.xyz:8080/api/user/signup`
+        const url = `http://localhost:8080/api/user/signup`
         const body = {
             email: email,
             nickname: nickname,

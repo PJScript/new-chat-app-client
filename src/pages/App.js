@@ -28,7 +28,7 @@ function App() {
   }
 
   const clickLogin = () => {
-    const url = `http://api.rudydy.xyz:8080/api/user/login`
+    const url = `http://localhost:8080/api/user/login`
     const body = {
       email:email,
       password:password

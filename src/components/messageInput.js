@@ -46,7 +46,7 @@ export const MessageInputComponent = ({socket,setList}) => {
           }
           // e.preventDefault()
       
-          fetch('http://api.rudydy.xyz:8080/api/chat/image', { // Your POST endpoint
+          fetch('http://localhost:8080/api/chat/image', { // Your POST endpoint
             method: 'POST',
             credentials: "include",
             body: formData
@@ -66,7 +66,7 @@ export const MessageInputComponent = ({socket,setList}) => {
     
         }else if(!file && message.length >= 0){
     
-          const url = `http://api.rudydy.xyz:8080/api/chat`
+          const url = `http://localhost:8080/api/chat`
     
           const body = {
             message: message,
@@ -110,7 +110,7 @@ export const MessageInputComponent = ({socket,setList}) => {
   const onChangeMessage = (e) => {
   }
     const onClickRmChat = () => {
-    const url = `http://api.rudydy.xyz:8080/api/chat/removechat`
+    const url = `http://localhost:8080/api/chat/removechat`
     if (window.confirm('정말 채팅을 지우시겠습니까?')) {
       fetch(url, {
         method: 'GET',

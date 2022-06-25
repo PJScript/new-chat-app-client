@@ -17,7 +17,7 @@ const Header = () => {
             return;
         }
 
-const url = `http://api.rudydy.xyz:8080/api/user/logout`
+const url = `http://localhost:8080/api/user/logout`
 
 if(email.length > 0){
     fetch(url,{
@@ -49,7 +49,7 @@ useEffect(()=>{
         <HeaderLayout>
             <HeaderList>
                 <HeaderItem onClick={() =>navigate('/chat')}>채팅</HeaderItem>
-                <HeaderItem onClick={() =>navigate('/login')}>홈</HeaderItem>
+                <HeaderItem onClick={() =>navigate('/')}>홈</HeaderItem>
                 <HeaderItem onClick={onClickLogout}>
                     {login ? "로그아웃":
                     "로그인"
