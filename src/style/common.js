@@ -99,12 +99,14 @@ margin-left:6px;
 `
 
 export const ChatDataBoxMsg = styled.div`
-  background:whitesmoke;
+  background:whitesmoke;  //default other chat color
+  /* background:rgb(220, 215, 201); */
+
   padding:10px;
   width:fit-content;
   border-radius: 4px;
   word-break: break-all;
-
+  border:1px solid whitesmoke;
 
 `
 
@@ -137,11 +139,15 @@ export const MyChatDataBoxMsg = styled.div`
   padding:10px;
   word-break: break-all;
 
-  background:rgb(254, 240, 27);
+  background:rgb(254, 240, 27); // kakao yellow
+background: rgb(55,27,88);
+background: linear-gradient(137deg, rgba(55,27,88,0.4) 0%, rgba(15,0,249,0.4) 100%, rgba(255,255,255,0.22) 100%);
+background: rgb(219,223,253);
+border:1px solid rgb(219,223,253,0.2);
+
   /* padding-left:50%; */
   text-align:left;
-  border:1px solid rgb(128,128,128,0.2);
-  border-radius:20px;
+  border-radius:4px;
 `
 
 export const MyChatDataBoxImg = styled.img`

@@ -110,9 +110,11 @@ export default Chat
 
 //rgb(74,21,75)
 const ChatInner = styled.div`
- width:100%;
- height:100vh;
+ width:auto;
+ height:auto;
  position:relative;
+ display:flex;
+ justify-content:right;
 `
 
 const ChatHeader = styled.div`
@@ -126,13 +128,14 @@ const ChatHeader = styled.div`
 const ChatSideBar = styled.div`
   position:absolute;
   display:flex;
+  z-index:1;
   flex-direction:column;
   justify-content:center;
   align-items:center;
   left:0;
   width:200px;
   height:100vh;
-  background:rgb(74,21,75,0.9);
+  background:rgb(34,44,50,0.9);
   
   @media screen and (max-width:768px){
     display:none;

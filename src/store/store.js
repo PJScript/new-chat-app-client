@@ -30,7 +30,10 @@ const useStore = create(set => ({
   setView:(input) => set({ view:input }),
 
   img:"",
-  setImg:(input) => set({ img:input })
+  setImg:(input) => set({ img:input }),
+
+  isLoading:false,
+  setIsLoading:(input) => set({ isLoading:input })
 }));
 
 

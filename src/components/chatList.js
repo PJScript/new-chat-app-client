@@ -16,7 +16,7 @@ const ChatList = () => {
   const email = useStore((state) => state.email)
   const setEmail = useStore((state) => state.setEmail)
   const setPage = useStore((state) => state.setPage)
-  const setLogin = useStore((state)=>state.setLogin)
+  const setLogin = useStore((state) => state.setLogin)
   const navigate = useNavigate()
 
   const [list, setList] = useState([])
@@ -26,7 +26,7 @@ const ChatList = () => {
 
   const [newMessage, setNewMessage] = useState();
   const [newMessageAlert, setNewMessageAlert] = useState(0);
-  const [newMessageAlertContent,setNewMessageAlertContent] = useState({name:"",message:""})
+  const [newMessageAlertContent, setNewMessageAlertContent] = useState({ name: "", message: "" })
   const [imgLoad, setImgLoad] = useState(0)
 
   const [moreMessageLoading, setMoreMessageLoading] = useState(true)
@@ -41,12 +41,15 @@ const ChatList = () => {
   const setLiveScrollHeight = useStore((state) => state.setLiveScrollHeight)
 
 
-  const [whoMessage,setWhoMessage] = useState('');
+  const [whoMessage, setWhoMessage] = useState('');
 
 
-  const [isLoading, setIsLoading] = useState(false)
-  const setView = useStore( ( state ) => state.setView )
-  const setImg = useStore( (state) => state.setImg )
+  const isLoading = useStore((state) => state.isLoading)
+  const setIsLoading = useStore((state) => state.setIsLoading)
+
+
+  const setView = useStore((state) => state.setView)
+  const setImg = useStore((state) => state.setImg)
 
 
   const [isRender, setIsRender] = useState(false);
@@ -61,17 +64,17 @@ const ChatList = () => {
     })
     socket.on("broadcast-message", (data) => {
 
-    console.log(listRef.current?.scrollHeight,"과거 스크롤")
-    console.log(liveScrollHeight,"스크롤")
+      console.log(listRef.current?.scrollHeight, "과거 스크롤")
+      console.log(liveScrollHeight, "스크롤")
       setPrevScrollHeight(listRef.current?.scrollHeight)
 
       // console.log(list, "리스트")
       // console.log(prevScrollHeight)
       // setList((list) => list.length >= 10 ? [data,...list.slice(1, list.length) ] : [data,...list])
       setWhoMessage(data.email)
-      console.log(data,"데이터")
+      console.log(data, "데이터")
       // setList((list) => [data,...list.slice(0,9) ] )
-      setList((list) => [data,...list]);
+      setList((list) => [data, ...list]);
     })
     socket.on("broadcast-image", (data) => {
       setList((list) => [...list, data]);
@@ -101,40 +104,40 @@ const ChatList = () => {
     const url = `http://localhost:8080/api/chat/morechat?page=${Number(sessionStorage.getItem('p'))}`
     fetch(url, {
       method: 'GET',
-      credentials : "include", // to send HTTP only cookies
-      headers: {'Content-Type': 'application/json'}
+      credentials: "include", // to send HTTP only cookies
+      headers: { 'Content-Type': 'application/json' }
     }).then((res) => {
 
       if (res.status !== 200) {
-                navigate('/login')
-                setTimeout(() => {
-                  alert('로그인 후 이용 할 수 있습니다')
-                }, 1000)
-    }else{
-    return res.json()
-    }
-  }).then((data) => {
-        if (data.data.length === 0) {
-          alert('더 이상 채팅이 없어요!')
-          setEmail(data.email)
-          setMoreMessageLoading(false)
-          setScrollTop(false)
+        navigate('/login')
+        setTimeout(() => {
+          alert('로그인 후 이용 할 수 있습니다')
+        }, 1000)
+      } else {
+        return res.json()
+      }
+    }).then((data) => {
+      if (data.data.length === 0) {
+        alert('더 이상 채팅이 없어요!')
+        setEmail(data.email)
+        setMoreMessageLoading(false)
+        setScrollTop(false)
 
-        } else {
-          
-          setList((list) => [...list,...data.data ]);
-          setEmail(data.email)
-          const nextPage = sessionStorage.setItem('p', Number(sessionStorage.getItem('p')) + 1)
-          setPage(nextPage)
-          if(data.email){
+      } else {
+
+        setList((list) => [...list, ...data.data]);
+        setEmail(data.email)
+        const nextPage = sessionStorage.setItem('p', Number(sessionStorage.getItem('p')) + 1)
+        setPage(nextPage)
+        if (data.email) {
           setLogin(true)
-          }
-          setMoreMessageLoading(false)
         }
+        setMoreMessageLoading(false)
+      }
 
 
-        console.log(data)
-      })
+      console.log(data)
+    })
 
     // setIsLoading(true)
   }
@@ -146,59 +149,59 @@ const ChatList = () => {
   // scrollBottom 
   useEffect(() => {
     let who
-    
+
     const totalScroll = listRef.current?.scrollHeight
     let resultMoveScroll = (totalScroll - prevScrollHeight)
     resultMoveScroll = resultMoveScroll + Math.abs(liveScrollHeight)
     resultMoveScroll = -resultMoveScroll
-    console.log(-resultMoveScroll,"최종 이동 값")
+    console.log(-resultMoveScroll, "최종 이동 값")
     // console.log(email,"이메일")
 
 
-    if(listRef.current.scrollTop !== 0 && whoMessage !== email && isLoading){
-console.log('스크롤 테스트')
-console.log(resultMoveScroll,"스크롤 이동 위치")
+    if (listRef.current.scrollTop !== 0 && whoMessage !== email && isLoading) {
+      console.log('스크롤 테스트')
+      console.log(resultMoveScroll, "스크롤 이동 위치")
       // console.log(listRef.current.scrollHeight,"현재 스크롤")
       // console.log(prevScrollHeight,"이전 스크롤")
       // listRef.current.scrollTo(0, listRef.current.scrollHeight - prevScrollHeight );
       // setTimeout(()=>{
-        listRef.current.scrollTo(0, resultMoveScroll);
-        setNewMessageAlert(1);
-        setWhoMessage("");
+      listRef.current.scrollTo(0, resultMoveScroll);
+      setNewMessageAlert(1);
+      setWhoMessage("");
       // },1000)
-    }else if(scrollBottom){
+    } else if (scrollBottom) {
       console.log('작동?')
       listBottomRef.current?.scrollIntoView({ hehavior: 'smooth' });
-    }else if(!scrollBottom && whoMessage === email){
+    } else if (!scrollBottom && whoMessage === email) {
       listBottomRef.current?.scrollIntoView({ hehavior: 'smooth' });
     }
-    
 
-  //   if(Number(sessionStorage.getItem('p')) === 1){
-      
-  //   }
-  //   if (list.length > 0 && !scrollTop) {
-  //     who = list[0].email
-  //     console.log(email)
-  //     console.log(who)
-  //     console.log(email === who)
-  //   }
-   
 
-  //  if(!scrollBottom && who === email){
-  //     return;
-  //  }else{
-  //     setNewMessageAlert(0);
-  //   }
-  
-    setIsLoading((isLoading) => true)
+    //   if(Number(sessionStorage.getItem('p')) === 1){
+
+    //   }
+    //   if (list.length > 0 && !scrollTop) {
+    //     who = list[0].email
+    //     console.log(email)
+    //     console.log(who)
+    //     console.log(email === who)
+    //   }
+
+
+    //  if(!scrollBottom && who === email){
+    //     return;
+    //  }else{
+    //     setNewMessageAlert(0);
+    //   }
+
+    setIsLoading(true)
 
 
   }, [list])
 
 
   useEffect(() => {
-    
+
   }, [newMessageAlertContent])
 
 
@@ -232,16 +235,16 @@ console.log(resultMoveScroll,"스크롤 이동 위치")
 
 
     if (!entry.isIntersecting) {
-    setScrollBottom(entry.isIntersecting)
+      setScrollBottom(entry.isIntersecting)
 
       // listBottomRef.current?.scrollIntoView();
-      console.log(listRef.current?.scrollTop,"실시간 스크롤")
+      console.log(listRef.current?.scrollTop, "실시간 스크롤")
       setLiveScrollHeight(listRef.current?.scrollTop)
 
       observer.unobserve(entry.target);
 
       observer.observe(entry.target);
-    }else{
+    } else {
       setScrollBottom(entry.isIntersecting)
       setNewMessageAlert(0);
       setIsLoading(false);
@@ -258,6 +261,8 @@ console.log(resultMoveScroll,"스크롤 이동 위치")
   }, []);
 
 
+
+
   //scroll top intersection observe
   const onIntersectTop = async ([entry], observer) => {
 
@@ -265,26 +270,25 @@ console.log(resultMoveScroll,"스크롤 이동 위치")
     if (!entry.isIntersecting) {
       observer.unobserve(entry.target);
       observer.observe(entry.target);
-      setScrollTop( () => entry.isIntersecting)
+      setScrollTop(() => entry.isIntersecting)
     } else {
-    console.log(entry.isIntersecting)
-    MoreMessage();
+      console.log(entry.isIntersecting)
+      if(Number(sessionStorage.getItem('p')) >= 2){
+        MoreMessage();
+      }
+        setScrollTop(() => entry.isIntersecting)
 
-        setScrollTop( () => entry.isIntersecting)
-
-        setMoreMessageLoading(true)
+        setMoreMessageLoading(true)   
     }
   }
 
   useEffect(() => {
-    if (isLoading) {
       const observerTop = new IntersectionObserver(onIntersectTop);
       observerTop.observe(listTopRef.current);
 
       return () => observerTop.disconnect()
-    }
 
-  }, [isLoading]);
+  }, []);
 
 
   const onClickImage = (e) => {
@@ -295,8 +299,8 @@ console.log(resultMoveScroll,"스크롤 이동 위치")
   }
 
   const detectMobileKeyboard = (e) => {
-console.log(document.activeElement)
-listBottomRef.current?.scrollIntoView();
+    console.log(document.activeElement)
+    listBottomRef.current?.scrollIntoView();
 
   }
 
@@ -306,7 +310,7 @@ listBottomRef.current?.scrollIntoView();
     return () => window.removeEventListener("resize", detectMobileKeyboard)
 
   }, [])
-  
+
 
 
 
@@ -317,9 +321,9 @@ listBottomRef.current?.scrollIntoView();
       <ChatBoxChatList ref={listRef} >
         {/* <Modal /> */}
 
-<ScrollBottomTargetBox ref={listBottomRef}></ScrollBottomTargetBox>
-  
- 
+        <ScrollBottomTargetBox ref={listBottomRef}></ScrollBottomTargetBox>
+
+
         {list.map((item, idx) => {
           if (item.email !== email) {
             return <OtherChat item={item} idx={idx} setImgLoad={setImgLoad} onClickImage={onClickImage} />
@@ -329,13 +333,13 @@ listBottomRef.current?.scrollIntoView();
 
         }
         )}
-<ScrollTopTargetBox ref={listTopRef}></ScrollTopTargetBox>
+        <ScrollTopTargetBox ref={listTopRef}></ScrollTopTargetBox>
 
-{moreMessageLoading === true ?
-  <TopLoadingBox>메시지를 기다리는 중..</TopLoadingBox>
-  :
-  <TopLoadingBox>더이상 메시지가 없어요..!</TopLoadingBox>
-}
+        {moreMessageLoading === true ?
+          <TopLoadingBox>메시지를 기다리는 중..</TopLoadingBox>
+          :
+          <TopLoadingBox>더이상 메시지가 없어요..!</TopLoadingBox>
+        }
 
 
 
@@ -362,9 +366,11 @@ const ChatListWrapper = styled.div`
   /* background:blue; */
   padding-left:20px;
   background:white;
-  width:100vw;
-  height:800px;
+  width:calc(100vw - 200px);
+  height:100%;
+  min-height:800px;
   @media screen and (max-width:768px){
+    width:100vw;
     padding-left:20px;
     padding-right:10px;
   }

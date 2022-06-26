@@ -69,7 +69,10 @@ const HeaderLayout = styled.div`
   z-index: 999;
   width:100%;
   height:40px;
-  background:rgb(74,21,75);
+  /* background:rgb(34,44,50,1); */
+  background:white;
+  border-bottom:1px solid rgb(128,128,128,0.4);
+  color:black;
 `
 
 
@@ -92,7 +95,6 @@ align-items:center;
 justify-content:center;
 min-width:100px;
   height:100%;
-  color:white;
   font-weight:bold;
   /* background:green; */
   &:hover{

@@ -8,7 +8,7 @@ const MyChat = ({item,idx,setImgLoad,onClickImage}) => {
             <S.MyChatDataBox>
               <S.MyChatDataBoxUserInfo>
                 <S.MyChatDataBoxDate>{dateFixer(item.created_at)}</S.MyChatDataBoxDate>
-                <S.MyChatDataBoxUserName>나</S.MyChatDataBoxUserName>
+                <S.MyChatDataBoxUserName>Me</S.MyChatDataBoxUserName>
               </S.MyChatDataBoxUserInfo>
               <S.MyChatDataBoxImg  id={idx} onClick={onClickImage} onLoad={() => setImgLoad(1)} src={item.img_url} />
             </S.MyChatDataBox>
@@ -22,7 +22,7 @@ const MyChat = ({item,idx,setImgLoad,onClickImage}) => {
               <S.MyChatDataBoxUserInfo>
                 <S.MyChatDataBoxDate>
                   {dateFixer(item.created_at)}  </S.MyChatDataBoxDate>
-                <S.MyChatDataBoxUserName>나</S.MyChatDataBoxUserName>
+                <S.MyChatDataBoxUserName>Me</S.MyChatDataBoxUserName>
               </S.MyChatDataBoxUserInfo>
               <S.MyChatDataBoxMsg>{item.message}</S.MyChatDataBoxMsg>
             </S.MyChatDataBox>
