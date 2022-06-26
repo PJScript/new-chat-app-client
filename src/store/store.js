@@ -17,6 +17,9 @@ const useStore = create(set => ({
   prevScrollHeight:0,
   setPrevScrollHeight: (input) => set({prevScrollHeight:input}),
 
+  liveScrollHeight:0,
+  setLiveScrollHeight: (input) => set({liveScrollHeight:input}),
+
   scrollBottom:1,
   setScrollBottom:(input) => set({ scrollBottom:input }),
 

@@ -11,6 +11,10 @@ export const MessageInputComponent = ({socket,setList}) => {
 
   const email = useStore((state) => state.email)
   const setEmail = useStore((state) => state.setEmail)
+  const nickname = useStore((state) => state.nickname)
+  const setNickname = useStore((state) => state.setNickname)
+
+
   const page = useStore((state) => state.page)
   const setPage = useStore((state) => state.setPage)
   const setSec = useStore((state) => state.setSec)
@@ -55,7 +59,7 @@ export const MessageInputComponent = ({socket,setList}) => {
               return res.json()
             }
           }).then( async (data) => {
-          await socket.emit('img',{email:data.email,room:'normal', message:data.message,img_url:data.img_url,created_at:data.created_at})
+          await socket.emit('img',{email:data.email,nickname:nickname, room:'normal', message:data.message,img_url:data.img_url,created_at:data.created_at})
             
         })      
           inputRef.current.value = ""
@@ -73,7 +77,7 @@ export const MessageInputComponent = ({socket,setList}) => {
             room: "normal"
           }
       
-          await socket.emit('message', { email: email, message: message, room: "normal" })
+          await socket.emit('message', { email: email, nickname:nickname,message: message, room: "normal" })
           fetch(url, {
             method: 'POST',
             credentials: "include", // to send HTTP only cookies

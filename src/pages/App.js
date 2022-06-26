@@ -5,12 +5,15 @@ import * as S from "../style/common"
 import useStore from "../store/store";
 
 function App() {
-  console.log = function no_console() {};
+  // console.log = function no_console() {};
     console.warn = function no_console() {};
   const email = useStore((state) => state.email)
   const setEmail = useStore((state) => state.setEmail)
   const password = useStore((state)=>state.password)
   const setPassword = useStore((state)=>state.setPassword)
+  const nickname = useStore((state) => state.nickname)
+  const setNickname = useStore((state) => state.setNickname)
+
 
   const login = useStore((state) => state.login)
   const setLogin = useStore((state) => state.setLogin)
@@ -42,16 +45,20 @@ function App() {
     .then((res)=> {
       if(res.status === 200){
         setLogin(true)
-        navigate('/chat')
+        return res.json();
       }else if( res.status=== 401){
         navigate('/login')
-
         alert('허가 받지 않은 사용자 이거나 삭제된 사용자 입니다')
       }else{
         navigate('/login')
-alert('알 수 없는 에러')
+      alert('알 수 없는 에러')
       }
-    })}
+    }).then((body)=>{
+      setEmail(body.email)
+      setNickname(body.nickname)
+      navigate('/chat')
+    })
+  }
 
     const onClickAdminBtn = () => {
 navigate('/block')
