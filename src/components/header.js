@@ -46,18 +46,18 @@ useEffect(()=>{
   console.log(login,"로그인")
 }, [login])
     return (
-        <HeaderLayout>
+         <HeaderLayout>
             <HeaderList>
+            <HeaderItem onClick={() =>navigate('/')}>홈</HeaderItem>
                 <HeaderItem onClick={() =>navigate('/chat')}>채팅</HeaderItem>
-                <HeaderItem onClick={() =>navigate('/')}>홈</HeaderItem>
+                <S.FlexFullItem></S.FlexFullItem>
                 <HeaderItem onClick={onClickLogout}>
-                    {login ? "로그아웃":
+                    {login ? <div>ㅁ 홍길동</div>:
                     "로그인"
                 }
                     </HeaderItem>
             </HeaderList>
-
-        </HeaderLayout>
+        </HeaderLayout>       
     )
 }
 
@@ -69,9 +69,11 @@ const HeaderLayout = styled.div`
   z-index: 999;
   width:100%;
   height:40px;
+  min-height:40px;
   /* background:rgb(34,44,50,1); */
   background:white;
-  border-bottom:1px solid rgb(128,128,128,0.4);
+  border-bottom:2px solid rgb(128,128,128,0.2);
+  /* box-shadow:1px 1px 6px rgb(128,128,128,0.4); */
   color:black;
 `
 
@@ -83,7 +85,7 @@ const HeaderList = styled.ul`
   margin:0;
   padding:0;
   display:flex;
-  justify-content:space-between;
+  justify-content:left;
   padding-left:20px;
   padding-right:20px;
   align-items:center;
@@ -98,7 +100,7 @@ min-width:100px;
   font-weight:bold;
   /* background:green; */
   &:hover{
-    background:orange;
+    /* background:orange; */
     cursor:pointer;
   }
 `

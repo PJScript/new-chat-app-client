@@ -193,6 +193,7 @@ const ChatList = () => {
     //  }else{
     //     setNewMessageAlert(0);
     //   }
+console.log(list,"리스트")
 
     setIsLoading(true)
 
@@ -238,7 +239,7 @@ const ChatList = () => {
       setScrollBottom(entry.isIntersecting)
 
       // listBottomRef.current?.scrollIntoView();
-      console.log(listRef.current?.scrollTop, "실시간 스크롤")
+      // console.log(listRef.current?.scrollTop, "실시간 스크롤")
       setLiveScrollHeight(listRef.current?.scrollTop)
 
       observer.unobserve(entry.target);
@@ -268,17 +269,20 @@ const ChatList = () => {
 
 
     if (!entry.isIntersecting) {
+      console.log(entry.isIntersecting)
+
       observer.unobserve(entry.target);
       observer.observe(entry.target);
       setScrollTop(() => entry.isIntersecting)
     } else {
       console.log(entry.isIntersecting)
+      setMoreMessageLoading(true)   
+
       if(Number(sessionStorage.getItem('p')) >= 2){
         MoreMessage();
       }
         setScrollTop(() => entry.isIntersecting)
 
-        setMoreMessageLoading(true)   
     }
   }
 
@@ -318,6 +322,28 @@ const ChatList = () => {
 
   return (
     <ChatListWrapper>
+<ChatBoxTitleBar>
+  <ChatBoxTitleBarItem>
+
+
+    <ChatBoxTitleText>
+   개발팀 <span style={{color:'gray',paddingLeft:"6px"}}>&#183;</span>
+   <ChatBoxTitleIconBox>ㅁ870</ChatBoxTitleIconBox>
+    </ChatBoxTitleText>
+  </ChatBoxTitleBarItem>
+  <ChatBoxTitleBarItem>조금 일하고 많이 벌자</ChatBoxTitleBarItem>
+  <S.FlexFullItem>
+  </S.FlexFullItem>
+  <ChatBoxTitleBarItem>
+  <ChatBoxTitleIconBox>    ㅁ더보기</ChatBoxTitleIconBox>
+  <ChatBoxTitleIconBox>    ㅁ공지</ChatBoxTitleIconBox>
+
+
+    </ChatBoxTitleBarItem>
+
+
+
+</ChatBoxTitleBar>
       <ChatBoxChatList ref={listRef} >
         {/* <Modal /> */}
 
@@ -333,20 +359,35 @@ const ChatList = () => {
 
         }
         )}
-        <ScrollTopTargetBox ref={listTopRef}></ScrollTopTargetBox>
+
 
         {moreMessageLoading === true ?
-          <TopLoadingBox>메시지를 기다리는 중..</TopLoadingBox>
+        <TopLoadingBox>메시지를 기다리는 중..</TopLoadingBox>
           :
-          <TopLoadingBox>더이상 메시지가 없어요..!</TopLoadingBox>
+        <TopLoadingBox>마지막 메시지</TopLoadingBox>
         }
 
-
+<ScrollTopTargetBox ref={listTopRef}></ScrollTopTargetBox>
 
       </ChatBoxChatList>
-      <NewMessageAlert scroll={newMessageAlert}>새로운 메시지!</NewMessageAlert>
-      <LogoutTimer></LogoutTimer>
+{list.length > 0 ?
 
+<NewMessageAlert scroll={newMessageAlert} onClick={() => listBottomRef.current?.scrollIntoView()}>
+ <NewMessageAlertContent>
+   <NewMessageAlertTitle>New Message
+   <span style={{color:'black',marginLeft:"30px"}}>&#183;</span>
+   </NewMessageAlertTitle>
+   <NewMessageAlertProfile>ㅁ</NewMessageAlertProfile>
+   <NewMessageAlertNickname>{list[0].nickname} </NewMessageAlertNickname>
+   <NewMessageAlertMessage>{list[0].message}</NewMessageAlertMessage>
+ </NewMessageAlertContent>
+</NewMessageAlert>
+:
+""
+
+}
+    
+      {/* <LogoutTimer></LogoutTimer> */}
       <MessageInputComponent socket={socket} setList={setList} />
     </ChatListWrapper>
 
@@ -359,33 +400,83 @@ export default ChatList
 const ChatListWrapper = styled.div`
   display:flex;
   flex-direction:column;
-  position:fixed;
-  padding-top:50px;
+  position:relative;
+  align-items:center;
+  justify-content:center;
+  padding:0;
+  margin:0;
   /* padding-left:220px; */
-  padding-right:20px;
+  /* padding-right:20px; */
   /* background:blue; */
-  padding-left:20px;
+  /* padding-left:20px; */
   background:white;
-  width:calc(100vw - 200px);
+  width:100%;
   height:100%;
-  min-height:800px;
+  /* background:red; */
+  overflow:hidden;
+  /* width:calc(100vw - 350px); */
+  /* width:calc(100% - 350px); */
+  /* height:100vh; */
   @media screen and (max-width:768px){
-    width:100vw;
-    padding-left:20px;
-    padding-right:10px;
+    /* width:100vw; */
+  }
+`
+
+const ChatBoxTitleBar = styled.div`
+position:absolute;
+display:flex;
+justify-content:left;
+padding-left:10px;
+align-items:center;
+  width:100%;
+  height:50px;
+  /* background:white; */
+  top:40px;
+  background:rgb(231,236,255,1);
+
+  /* box-shadow:0px 1px 10px 0px rgb(128,128,128,0.2); */
+`
+
+
+const ChatBoxTitleBarItem = styled.div`
+  width:fit-content;
+  /* background:blue; */
+  margin-right:34px;
+`
+
+
+const ChatBoxTitleText = styled.div`
+  font-weight:bold;
+  font-size:16px;
+`
+
+
+
+const ChatBoxTitleIconBox = styled.span`
+width:100%;
+font-size:16px;
+color:skyblue;
+margin-left:10px;
+&:hover{
+    cursor:pointer;
   }
 `
 
 const ChatBoxChatList = styled.ul`
-  position:relative;
   display:flex;
-  flex-direction:column-reverse;
-  /* flex-direction:column; */
+  /* position:fixed; */
   width:100%;
-  height:100%;
+  flex-direction:column-reverse;
+  height:calc(100% - 140px); // bottom chat input & header & notice size
   /* min-height:80vh; */
   margin:0;
   padding:0;
+  /* margin-top:40px; */
+  margin-top:40px;
+
+  padding-left:10px;
+  /* padding-bottom:20px; */
+
   list-style:none;
   overflow-y:scroll;
 `
@@ -394,9 +485,6 @@ const ChatBoxChatList = styled.ul`
 const ScrollBottomTargetBox = styled.div`
 
   width:100%;
-  height:10px;
-  height:100px;
-  background:red;
   /* margin-top:-100px; */
 `
 
@@ -405,8 +493,6 @@ const ScrollTopTargetBox = styled.div.attrs(() => {
 })`
   /* display:${(props) => props.isLoading ? "block" : "none"}; */
   width:100%;
-  height:10px;
-  background:blue;
   /* margin-top:-100px; */
 `
 
@@ -414,7 +500,11 @@ const ScrollTopTargetBox = styled.div.attrs(() => {
 const TopLoadingBox = styled.div`
   /* padding-top:60px; */
   width:100%;
-  height:50px;
+  height:60px;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  min-height:60px;
   font-size:18px;
   text-align:center;
   font-weight:bold;
@@ -423,15 +513,51 @@ const TopLoadingBox = styled.div`
 
 
 const NewMessageAlert = styled.div.attrs(() => { })`
-  display:${(props) => props.scroll === 0 ? "none" : "block"};
+  display:${(props) => props.scroll === 0 ? "none" : "flex"};
+  flex-direction:column;
+  justify-content:center;
   position:absolute;
-  bottom:0;
-  width:fit-content;
-  padding-left:40px;
-  padding-right:40px;
-  height:20px;
-  font-weight:bold;
+  /* bottom:0; */
+  padding-left:10px;
+  padding-right:10px;
+  width:100%;
+  height:fit-content;
   font-size:15px;
-  bottom:130px;
-  background:rgb(128,128,128,0.2);
+  bottom:54px;
+  /* left:0; */
+
+`
+
+const NewMessageAlertTitle = styled.div`
+  color:black;
+  font-weight:bold;
+  margin-left:20px;
+  margin-right:46px;
+`
+
+const NewMessageAlertContent = styled.div`
+  display:flex;
+  width:100%;
+  border-radius:8px;
+  background:rgb(160,160,160,0.9);
+  padding-top:10px;
+  padding-bottom:10px;
+  &:hover{
+    cursor:pointer;
+  }
+
+`
+
+const NewMessageAlertProfile = styled.div`
+  font-size:16px;
+  font-weight:bold;
+`
+
+const NewMessageAlertNickname = styled.div`
+  font-weight:bold;
+  margin-right:20px;
+`
+
+const NewMessageAlertMessage = styled.div`
+  /* font-weight: */
 `

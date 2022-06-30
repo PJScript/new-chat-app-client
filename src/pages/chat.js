@@ -7,6 +7,9 @@ import { MemoizedMessageInput, MessageInputComponent } from "../components/messa
 import { WindowScroller, CellMeasurer, CellMeasurerCache, AutoSizer, List, ListRowProps } from 'react-virtualized';
 import ChatList from '../components/chatList'
 import Modal from '../components/modal'
+import SideBarServerList from "../components/sideBarServerList";
+
+import SideBarList from "../components/sideBarList";
 
 
 const Chat = () => {
@@ -64,12 +67,10 @@ const Chat = () => {
   return (
     <S.Layout>
       <ChatInner>
-      <Modal />
-        <ChatSideBar>
-          <ChatSideBarItem>Secret Chat App</ChatSideBarItem>
-        </ChatSideBar>
+<SideBarServerList>하이요</SideBarServerList>
 
-       
+      <Modal />
+      <SideBarList />
 
           <ChatList/>
 
@@ -110,11 +111,12 @@ export default Chat
 
 //rgb(74,21,75)
 const ChatInner = styled.div`
- width:auto;
- height:auto;
- position:relative;
+ width:100%;
+ height:100%;
+ /* margin-top:40px; */
+ /* position:relative; */
  display:flex;
- justify-content:right;
+
 `
 
 const ChatHeader = styled.div`
@@ -123,36 +125,10 @@ const ChatHeader = styled.div`
   z-index: 999;
   width:100%;
   height:40px;
-  background:rgb(74,21,75);
-`
-const ChatSideBar = styled.div`
-  position:absolute;
-  display:flex;
-  z-index:1;
-  flex-direction:column;
-  justify-content:center;
-  align-items:center;
-  left:0;
-  width:200px;
-  height:100vh;
-  background:rgb(34,44,50,0.9);
-  
-  @media screen and (max-width:768px){
-    display:none;
-  }
+  /* background:rgb(74,21,75); */
+
 `
 
-const ChatSideBarItem = styled.div`
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  width:250px;
-  color:rgb(128,128,128,0.4);
-  height:fit-content;
-  padding-bottom:50px;
-  font-size:33px;
-  transform:rotate(-75deg);
-`
 
 
 

@@ -79,7 +79,7 @@ navigate('/block')
   <S.Layout>
     <Inner>
       <LoginBox>
-        <LoginBoxTitle>Secret Chat App</LoginBoxTitle>
+        <LoginBoxTitle>로그인</LoginBoxTitle>
         <S.InputBox>
           <S.InputBoxTitle >이메일</S.InputBoxTitle>
           <S.Input onChange={inputEmail}/>

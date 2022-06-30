@@ -94,7 +94,7 @@ const Signup = () => {
                     </S.InputBox>
                     <S.InputBox>
                         <S.InputBoxTitle >비밀번호</S.InputBoxTitle>
-                        <S.Input ref={passwordRef} onChange={(e) => setPassword(e.target.value)} />
+                        <S.Input type='password' ref={passwordRef} onChange={(e) => setPassword(e.target.value)} />
                     </S.InputBox>
                     <S.DefaultButton className="hover" onClick={clickSignup}>회원 가입</S.DefaultButton>
                     <SignUpTextBox>
@@ -114,12 +114,16 @@ const Inner = styled.div`
   align-items:center;
   width:100%;
   height:100vh;
+  
 `
 
 const LoginBox = styled.div`
   width:420px;
   height:auto;
   border:1px solid gray;
+  border:1px solid rgb(128,128,128,0.3);
+  border-radius:4px;
+  padding:8px;
 `
 
 const LoginBoxTitle = styled.div`
