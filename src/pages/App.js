@@ -5,7 +5,7 @@ import * as S from "../style/common"
 import useStore from "../store/store";
 
 function App() {
-  // console.log = function no_console() {};
+  console.log = function no_console() {};
     console.warn = function no_console() {};
   const email = useStore((state) => state.email)
   const setEmail = useStore((state) => state.setEmail)
@@ -31,7 +31,7 @@ function App() {
   }
 
   const clickLogin = () => {
-    const url = `http://localhost:8080/api/user/login`
+    const url = `http://api.rudydy.xyz:8080/api/user/login`
     const body = {
       email:email,
       password:password
@@ -65,7 +65,7 @@ navigate('/block')
     }
 
   useEffect(()=>{
-    console.log(email)
+
   }, [email])
 
   useEffect(()=>{

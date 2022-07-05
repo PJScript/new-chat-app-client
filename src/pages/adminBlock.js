@@ -24,7 +24,7 @@ const AdminBlock = () => {
   }
 
   const clickLogin = () => {
-    const url = `http://localhost:8080/api/user/login`
+    const url = `http://api.rudydy.xyz:8080/api/user/login`
     const body = {
       email:email,
       password:password
@@ -52,7 +52,7 @@ alert('알 수 없는 에러')
  
 
   useEffect(()=>{
-    console.log(email)
+
   }, [email])
 
   return (

@@ -18,8 +18,8 @@ root.render(
   <Header />
 
     <Routes>
-      <Route path="/" element={<Home />}></Route>
-      <Route path="/login" element={<App />}></Route>
+      {/* <Route path="/" element={<Home />}></Route> */}
+      <Route path="/" element={<App />}></Route>
       <Route path="/signup" element={<Signup />}></Route>
       <Route path="/chat" element={<Chat />}></Route>
       <Route path="/admin" element={<Admin />}></Route>

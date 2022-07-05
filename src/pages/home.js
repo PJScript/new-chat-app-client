@@ -4,12 +4,6 @@ import * as S from '../style/common'
 
 const Home = () => {
 
-    {/* <S.Layout>
-<Inner>
-홈 입니다.
-
-</Inner>
-</S.Layout> */}
     return (
     <S.Layout>
         <Inner>

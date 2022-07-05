@@ -1,6 +1,6 @@
 import create from 'zustand';
 
-// set method로 상태 변경 가능
+
 const useStore = create(set => ({
   email:"hello",
   setEmail: (input) => set({ email: input }),

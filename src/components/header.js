@@ -17,7 +17,7 @@ const Header = () => {
             return;
         }
 
-const url = `http://localhost:8080/api/user/logout`
+const url = `http://api.rudydy.xyz:8080/api/user/logout`
 
 if(email.length > 0){
     fetch(url,{
@@ -38,12 +38,9 @@ if(email.length > 0){
 }
 }
 
-// useEffect(()=>{
-//     console.log(email)
-//     },[email])
 
 useEffect(()=>{
-  console.log(login,"로그인")
+
 }, [login])
     return (
          <HeaderLayout>
@@ -52,7 +49,7 @@ useEffect(()=>{
                 <HeaderItem onClick={() =>navigate('/chat')}>채팅</HeaderItem>
                 <S.FlexFullItem></S.FlexFullItem>
                 <HeaderItem onClick={onClickLogout}>
-                    {login ? <div>ㅁ 홍길동</div>:
+                    {login ? "로그아웃":
                     "로그인"
                 }
                     </HeaderItem>

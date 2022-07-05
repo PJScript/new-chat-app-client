@@ -25,8 +25,7 @@ export const MessageInputComponent = ({ socket, setList }) => {
 
 
     const keyDownSubmit = useCallback((e) => {
-        console.log(e.code, "zhem")
-        console.log(message)
+
         if (e.code !== 'Enter') {
             return;
         } else {
@@ -36,7 +35,7 @@ export const MessageInputComponent = ({ socket, setList }) => {
     }, [message, file])
 
     const onClickSubmit = async (e) => {
-        console.log(message, "메세지")
+
         if (message.length <= 0 && !file) {
             alert('메시지를 입력하거나 파일을 업로드 해주세요')
             return;
@@ -50,7 +49,7 @@ export const MessageInputComponent = ({ socket, setList }) => {
             }
             // e.preventDefault()
 
-            fetch('http://localhost:8080/api/chat/image', { // Your POST endpoint
+            fetch('http://api.rudydy.xyz:8080/api/chat/image', { // Your POST endpoint
                 method: 'POST',
                 credentials: "include",
                 body: formData
@@ -65,12 +64,12 @@ export const MessageInputComponent = ({ socket, setList }) => {
                 setFile()
                 setMessage(() => "")
             })
-           
+
             //   setScrollBottom(1)
 
         } else if (!file && message.length >= 0) {
 
-            const url = `http://localhost:8080/api/chat`
+            const url = `http://api.rudydy.xyz:8080/api/chat`
 
             const body = {
                 message: message,
@@ -85,20 +84,20 @@ export const MessageInputComponent = ({ socket, setList }) => {
                 body: JSON.stringify(body)
             }).then((res) => {
                 if (res.status === 200) {
-                    console.log(inputRef.current,"인풋 벨류")
+
                     inputRef.current.value = ""
                     // imgInputRef.current.value = ""
                     setFile()
                     setMessage(() => "")
-                }else if(res.status === 401){
+                } else if (res.status === 401) {
                     navigate('/login')
                     setTimeout(() => {
                         alert('세션이 만료 되었습니다')
                     }, 1000)
-                   
+
                 }
             }).catch((err) => {
-                console.log(err,"에러")
+
                 navigate('/login')
 
                 alert('세션이 만료 되었습니다 error')
@@ -119,7 +118,7 @@ export const MessageInputComponent = ({ socket, setList }) => {
     const onChangeMessage = (e) => {
     }
     const onClickRmChat = () => {
-        const url = `http://localhost:8080/api/chat/removechat`
+        const url = `http://api.rudydy.xyz:8080/api/chat/removechat`
         if (window.confirm('정말 채팅을 지우시겠습니까?')) {
             fetch(url, {
                 method: 'GET',
@@ -128,7 +127,7 @@ export const MessageInputComponent = ({ socket, setList }) => {
             })
                 .then((res) => res.json())
                 .then((data) => {
-                    console.log(data)
+
                 })
             setList([]);
         }
@@ -136,6 +135,8 @@ export const MessageInputComponent = ({ socket, setList }) => {
 
     useEffect(() => {
         if (file) {
+
+            inputRef.current.value = file.name
             inputRef.current.focus()
         }
         window.addEventListener('keyup', keyDownSubmit)
@@ -143,14 +144,25 @@ export const MessageInputComponent = ({ socket, setList }) => {
         return () => window.removeEventListener('keyup', keyDownSubmit)
 
     }, [message, file])
-    
+
     return (
         <MessageInputWrapper>
             <MessageInputBox>
-                <MoreToolBoxList> 
-<MoreToolBoxItem>ㅁ</MoreToolBoxItem>
-<MoreToolBoxItem>ㅁ</MoreToolBoxItem>
-<MoreToolBoxItem>ㅁ</MoreToolBoxItem>
+                <MoreToolBoxList>
+                    <MoreToolBoxItem>
+                        <RemoveChatBtn onClick={onClickRmChat}>C</RemoveChatBtn>
+                    </MoreToolBoxItem>
+                    <MoreToolBoxItem>
+                        <ImageInputBox>
+                            <input style={{ display: 'none' }} ref={imgInputRef} onKeyDown={(e) => e.key === 'Enter' ? e.preventDefault() : ""} type="file" id="chooseFile" name="chooseFile" accept="image/*" onChange={onChangeImg} />
+                            <MediaUploadBtn for="chooseFile">미디어</MediaUploadBtn>
+                        </ImageInputBox>
+                    </MoreToolBoxItem>
+                    <MoreToolBoxItem>
+                        {/* <div onClick={onClickRmChat}>X</div> */}
+
+                    </MoreToolBoxItem>
+
 
 
 
@@ -158,13 +170,10 @@ export const MessageInputComponent = ({ socket, setList }) => {
                 <MessageInput onKeyDown={(e) => e.key === 'Enter' ? e.preventDefault() : ""} ref={inputRef} placeholder="메시지를 입력 해주세요" onChange={(e) => setMessage(e.target.value)} />
                 <SubmitBtn onClick={onClickSubmit} onKeyDown={onClickSubmit}>전송</SubmitBtn>
             </MessageInputBox>
-            {/* <FooterToolBox>
-                <RemoveChatBtn onClick={onClickRmChat}>채팅 지우기</RemoveChatBtn>
+            <FooterToolBox>
 
-                <ImageInputBox>
-                    <input ref={imgInputRef} onKeyDown={(e) => e.key === 'Enter' ? e.preventDefault() : ""} type="file" id="chooseFile" name="chooseFile" accept="image/*" onChange={onChangeImg} />
-                </ImageInputBox>
-            </FooterToolBox> */}
+
+            </FooterToolBox>
         </MessageInputWrapper>
 
     )
@@ -208,6 +217,7 @@ margin:0;
 padding:0;
   display:flex;
   height:50px;
+  /* margin-right:50px; */
   /* margin-top:10px; */
   /* padding:16px; */
   font-size:20px;
@@ -286,9 +296,9 @@ const FooterToolBox = styled.div`
 
 
 const RemoveChatBtn = styled.div`
-  width:100px;
-  min-width:70px;
-  height:100%;
+  width:30px;
+  min-width:30px;
+  height:30px;
   display:flex;
   align-items:center;
   justify-content:center;
@@ -301,13 +311,31 @@ const RemoveChatBtn = styled.div`
   }
 `
 
+const MediaUploadBtn = styled.label`
+width:40px;
+  min-width:50px;
+  height:30px;
+  display:flex;
+  font-size:14px;
+  align-items:center;
+  justify-content:center;
+  /* padding:6px; */
+  background:rgb(74,21,75,0.6);
+  border-radius:4px;
+  margin-right:10px;
+  &:hover{
+    cursor:pointer;
+  }
+`
+
+
 
 const ImageInputBox = styled.div`
 display:flex;
 align-items:center;
   width:fit-content;
   overflow:hidden;
-  height:100%;
+  height:50px;
   min-height:30px;
 `
 

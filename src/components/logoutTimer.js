@@ -13,7 +13,7 @@ const LogoutTimer = () => {
 
     const timeId = useRef(null)
     const SessionTimerReset = () => {
-        const url = `http://localhost:8080/api/user/session`
+        const url = `http://api.rudydy.xyz:8080/api/user/session`
         fetch(url,{
             method: 'GET',
             credentials: "include", // to send HTTP only cookies

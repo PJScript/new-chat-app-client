@@ -15,6 +15,8 @@ let socket
 const ChatList = () => {
   const email = useStore((state) => state.email)
   const setEmail = useStore((state) => state.setEmail)
+  const setNickname = useStore((state) => state.setNickname)
+
   const setPage = useStore((state) => state.setPage)
   const setLogin = useStore((state) => state.setLogin)
   const navigate = useNavigate()
@@ -63,16 +65,10 @@ const ChatList = () => {
       console.log(data)
     })
     socket.on("broadcast-message", (data) => {
-
-      console.log(listRef.current?.scrollHeight, "과거 스크롤")
-      console.log(liveScrollHeight, "스크롤")
       setPrevScrollHeight(listRef.current?.scrollHeight)
-
-      // console.log(list, "리스트")
-      // console.log(prevScrollHeight)
       // setList((list) => list.length >= 10 ? [data,...list.slice(1, list.length) ] : [data,...list])
       setWhoMessage(data.email)
-      console.log(data, "데이터")
+      
       // setList((list) => [data,...list.slice(0,9) ] )
       setList((list) => [data, ...list]);
     })
@@ -101,7 +97,7 @@ const ChatList = () => {
     // }
     setIsLoading(false);
 
-    const url = `http://localhost:8080/api/chat/morechat?page=${Number(sessionStorage.getItem('p'))}`
+    const url = `http://api.rudydy.xyz:8080/api/chat/morechat?page=${Number(sessionStorage.getItem('p'))}`
     fetch(url, {
       method: 'GET',
       credentials: "include", // to send HTTP only cookies
@@ -109,7 +105,7 @@ const ChatList = () => {
     }).then((res) => {
 
       if (res.status !== 200) {
-        navigate('/login')
+        navigate('/')
         setTimeout(() => {
           alert('로그인 후 이용 할 수 있습니다')
         }, 1000)
@@ -120,11 +116,12 @@ const ChatList = () => {
       if (data.data.length === 0) {
         alert('더 이상 채팅이 없어요!')
         setEmail(data.email)
+        setNickname(data.nickname)
         setMoreMessageLoading(false)
         setScrollTop(false)
 
       } else {
-
+        setNickname(data.nickname)
         setList((list) => [...list, ...data.data]);
         setEmail(data.email)
         const nextPage = sessionStorage.setItem('p', Number(sessionStorage.getItem('p')) + 1)
@@ -154,46 +151,15 @@ const ChatList = () => {
     let resultMoveScroll = (totalScroll - prevScrollHeight)
     resultMoveScroll = resultMoveScroll + Math.abs(liveScrollHeight)
     resultMoveScroll = -resultMoveScroll
-    console.log(-resultMoveScroll, "최종 이동 값")
-    // console.log(email,"이메일")
-
-
     if (listRef.current.scrollTop !== 0 && whoMessage !== email && isLoading) {
-      console.log('스크롤 테스트')
-      console.log(resultMoveScroll, "스크롤 이동 위치")
-      // console.log(listRef.current.scrollHeight,"현재 스크롤")
-      // console.log(prevScrollHeight,"이전 스크롤")
-      // listRef.current.scrollTo(0, listRef.current.scrollHeight - prevScrollHeight );
-      // setTimeout(()=>{
       listRef.current.scrollTo(0, resultMoveScroll);
       setNewMessageAlert(1);
       setWhoMessage("");
-      // },1000)
     } else if (scrollBottom) {
-      console.log('작동?')
       listBottomRef.current?.scrollIntoView({ hehavior: 'smooth' });
     } else if (!scrollBottom && whoMessage === email) {
       listBottomRef.current?.scrollIntoView({ hehavior: 'smooth' });
     }
-
-
-    //   if(Number(sessionStorage.getItem('p')) === 1){
-
-    //   }
-    //   if (list.length > 0 && !scrollTop) {
-    //     who = list[0].email
-    //     console.log(email)
-    //     console.log(who)
-    //     console.log(email === who)
-    //   }
-
-
-    //  if(!scrollBottom && who === email){
-    //     return;
-    //  }else{
-    //     setNewMessageAlert(0);
-    //   }
-console.log(list,"리스트")
 
     setIsLoading(true)
 
@@ -217,7 +183,7 @@ console.log(list,"리스트")
 
   // socket connect
   useEffect(() => {
-    socket = io.connect('http://localhost:8080')
+    socket = io.connect('http://api.rudydy.xyz:8080')
     sessionStorage.setItem('p', 1)
     socketListener()
     MoreMessage();
@@ -232,14 +198,9 @@ console.log(list,"리스트")
 
   //scroll bottom intersection observe
   const onIntersectBottom = async ([entry], observer) => {
-    // let scroll = data[0].intersectionRatio
-
 
     if (!entry.isIntersecting) {
       setScrollBottom(entry.isIntersecting)
-
-      // listBottomRef.current?.scrollIntoView();
-      // console.log(listRef.current?.scrollTop, "실시간 스크롤")
       setLiveScrollHeight(listRef.current?.scrollTop)
 
       observer.unobserve(entry.target);
@@ -269,13 +230,13 @@ console.log(list,"리스트")
 
 
     if (!entry.isIntersecting) {
-      console.log(entry.isIntersecting)
+
 
       observer.unobserve(entry.target);
       observer.observe(entry.target);
       setScrollTop(() => entry.isIntersecting)
     } else {
-      console.log(entry.isIntersecting)
+
       setMoreMessageLoading(true)   
 
       if(Number(sessionStorage.getItem('p')) >= 2){
@@ -297,19 +258,19 @@ console.log(list,"리스트")
 
   const onClickImage = (e) => {
     const id = e.target.getAttribute('id')
-    console.log(list[id])
+
     setImg(list[id].img_url)
     setView(true)
   }
 
   const detectMobileKeyboard = (e) => {
-    console.log(document.activeElement)
+
     listBottomRef.current?.scrollIntoView();
 
   }
 
   useEffect(() => {
-    console.log('test')
+
     window.addEventListener("resize", detectMobileKeyboard)
     return () => window.removeEventListener("resize", detectMobileKeyboard)
 
@@ -322,28 +283,6 @@ console.log(list,"리스트")
 
   return (
     <ChatListWrapper>
-<ChatBoxTitleBar>
-  <ChatBoxTitleBarItem>
-
-
-    <ChatBoxTitleText>
-   개발팀 <span style={{color:'gray',paddingLeft:"6px"}}>&#183;</span>
-   <ChatBoxTitleIconBox>ㅁ870</ChatBoxTitleIconBox>
-    </ChatBoxTitleText>
-  </ChatBoxTitleBarItem>
-  <ChatBoxTitleBarItem>조금 일하고 많이 벌자</ChatBoxTitleBarItem>
-  <S.FlexFullItem>
-  </S.FlexFullItem>
-  <ChatBoxTitleBarItem>
-  <ChatBoxTitleIconBox>    ㅁ더보기</ChatBoxTitleIconBox>
-  <ChatBoxTitleIconBox>    ㅁ공지</ChatBoxTitleIconBox>
-
-
-    </ChatBoxTitleBarItem>
-
-
-
-</ChatBoxTitleBar>
       <ChatBoxChatList ref={listRef} >
         {/* <Modal /> */}
 
@@ -359,8 +298,6 @@ console.log(list,"리스트")
 
         }
         )}
-
-
         {moreMessageLoading === true ?
         <TopLoadingBox>메시지를 기다리는 중..</TopLoadingBox>
           :
@@ -386,8 +323,7 @@ console.log(list,"리스트")
 ""
 
 }
-    
-      {/* <LogoutTimer></LogoutTimer> */}
+  
       <MessageInputComponent socket={socket} setList={setList} />
     </ChatListWrapper>
 
@@ -467,12 +403,12 @@ const ChatBoxChatList = styled.ul`
   /* position:fixed; */
   width:100%;
   flex-direction:column-reverse;
-  height:calc(100% - 140px); // bottom chat input & header & notice size
+  height:calc(100% - 100px); // bottom chat input & header & notice size
   /* min-height:80vh; */
   margin:0;
   padding:0;
   /* margin-top:40px; */
-  margin-top:40px;
+  /* margin-top:40px; */
 
   padding-left:10px;
   /* padding-bottom:20px; */
